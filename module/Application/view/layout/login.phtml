@@ -1,0 +1,51 @@
+
+<ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+                           <li>
+                              <div class="row">
+                                 <div class="col-md-12">
+                                    <form class="form " role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+
+                                       <div class="form-group">
+                                          <label class="sr-only" for="exampleInputEmail2">First Name</label>
+                                          <input type="fname" name="fname" class="form-control email" id="exampleInputEmail2" placeholder="First Name" required>
+                                       </div>
+
+                                       <div class="form-group">
+                                          <label class="sr-only" for="exampleInputEmail2">Email address</label>
+                                          <input type="email" name="email" class="form-control email" id="exampleInputEmail2" placeholder="Email address" required>
+                                       </div>
+
+                                       <div class="form-group">
+                                          <label class="sr-only" for="exampleInputPassword2">Password</label>
+                                          <input type="password" name="password" class="form-control password" id="exampleInputPassword2" placeholder="Password" required>
+                                       </div>
+
+                                       <div class="form-group">
+                                          <button type="button" class="btn btn-success btn-block sign-in">Sign in</button>
+                                       </div>
+
+                                    </form>
+                                 </div>
+                              </div>
+                           </li>
+                           <li class="divider"></li>
+                           <li>
+                              <a href="/auth2/oauth/google"><input class="btn btn-primary btn-block" type="button" id="sign-in-google"
+                                                                   value="Sign In with Google"> </a>
+                              <a href="/auth2/join/facebook"><input class="btn btn-primary btn-block" type="button" id="sign-in-twitter"
+                                                                    value="Sign In with Facebook"> </a>
+                           </li>
+                        </ul>
+<?php $this->inlineScript()->captureStart() ?>
+
+ $(".sign-in").click(function() {  
+         $.post('/user/api/login', {email: $(".email").val(), password: $(".password").val()}, function(data) {
+            if (data.error == 0) {
+               $("#login-nav").append('<div class="alert alert-success">Successfully Logged in</div>');
+          }
+      }, 'json');
+      });
+
+
+<?php $this->inlineScript()->captureEnd() ?>
+ 

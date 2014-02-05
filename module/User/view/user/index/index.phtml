@@ -1,0 +1,19 @@
+<table class="table">
+<tr>
+    <th>Full Name</th>
+    <th>Email</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($users as $user) : ?>
+<tr>
+    <td><?php echo $this->escapeHtml($user->full_name);?></td>
+    <td><?php echo $this->escapeHtml($user->email);?></td>
+    <td>
+        <a href="<?php echo $this->url('user',
+            array('action'=>'edit', 'id' => $user->id));?>">Edit</a>
+        <a href="<?php echo $this->url('user',
+            array('action'=>'delete', 'id' => $user->id));?>">Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>
