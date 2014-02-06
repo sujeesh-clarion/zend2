@@ -12,15 +12,67 @@ namespace User\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
+use Zend\Form\Annotation\AnnotationBuilder;
+
+use User\Model\User;
+
 class IndexController extends AbstractActionController
 {
     protected $userTable;
-    public function indexAction()
+
+    protected $form;
+    protected $storage;
+    protected $authservice;
+
+    public function getAuthService()
+    {
+        if (! $this->authservice) {
+            $this->authservice = $this->getServiceLocator()
+                                      ->get('AuthService');
+        }
+         
+        return $this->authservice;
+    }
+    public function getSessionStorage()
+    {
+        if (! $this->storage) {
+            $this->storage = $this->getServiceLocator()
+                                  ->get('User\Model\UserAuthStorage');
+        }
+         
+        return $this->storage;
+    }
+    public function getForm()
+    {
+        if (! $this->form) {
+            $user       = new User();
+            $builder    = new AnnotationBuilder();
+            $this->form = $builder->createForm($user);
+        }
+         
+        return $this->form;
+    }
+   /* public function indexAction()
     {
         
         return new ViewModel(array(
             'users' => $this->getUserTable()->fetchAll(),
         ));
+    }*/
+
+    public function loginAction()
+    {
+        //if already login, redirect to success page 
+        if ($this->getAuthService()->hasIdentity()){
+           // return $this->redirect()->toRoute('success');
+        }
+                 
+        $form       = $this->getForm();
+         
+        return array(
+            'form'      => $form,
+            'messages'  => $this->flashmessenger()->getMessages()
+        );
     }
     public function getUserTable()
     {
@@ -30,4 +82,6 @@ class IndexController extends AbstractActionController
         }
         return $this->userTable;
     }
+
+    
 }

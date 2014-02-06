@@ -6,8 +6,8 @@
                                     <form class="form " role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
 
                                        <div class="form-group">
-                                          <label class="sr-only" for="exampleInputEmail2">First Name</label>
-                                          <input type="fname" name="fname" class="form-control email" id="exampleInputEmail2" placeholder="First Name" required>
+                                          <label class="sr-only" for="exampleInputEmail2">Full Name</label>
+                                          <input type="fname" name="fname" class="form-control full_name" id="exampleInputEmail2" placeholder="First Name" required>
                                        </div>
 
                                        <div class="form-group">
@@ -21,7 +21,7 @@
                                        </div>
 
                                        <div class="form-group">
-                                          <button type="button" class="btn btn-success btn-block sign-in">Sign in</button>
+                                          <button type="button" class="btn btn-success btn-block sign-up">Sign in</button>
                                        </div>
 
                                     </form>
@@ -38,8 +38,8 @@
                         </ul>
 <?php $this->inlineScript()->captureStart() ?>
 
- $(".sign-in").click(function() {  
-         $.post('/api/user/login', {email: $(".email").val(), password: $(".password").val()}, function(data) {
+ $(".sign-up").click(function() {  
+         $.post('/api/user/signup', {full_name:$(".full_name").val(),email: $(".email").val(), password: $(".password").val()}, function(data) {
             if (data.error == 0) {
                $("#login-nav").append('<div class="alert alert-success">Successfully Logged in</div>');
           }

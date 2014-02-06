@@ -16,7 +16,12 @@ use User\Model\UserTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
-class Module
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\Authentication\Storage;
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
+
+class Module implements AutoloaderProviderInterface
 {
     public function onBootstrap(MvcEvent $e)
     {
@@ -56,6 +61,25 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new User());
                     return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
                 },
+                 'User\Model\UserAuthStorage' => function($sm){
+                        return new \User\Model\UserAuthStorage('user');  
+                },
+                 
+                'AuthService' => function($sm) {
+                            //My assumption, you've alredy set dbAdapter
+                            //and has users table with columns : user_name and pass_word
+                            //that password hashed with md5
+                    $dbAdapter           = $sm->get('Zend\Db\Adapter\Adapter');
+                            $dbTableAuthAdapter  = new DbTableAuthAdapter($dbAdapter, 
+                                                      'user','email','password', 'MD5(?)');
+                     
+                    $authService = new AuthenticationService();
+                    $authService->setAdapter($dbTableAuthAdapter);
+                            $authService->setStorage($sm->get('User\Model\UserAuthStorage'));
+                      
+                    return $authService;
+                },
+                   
             ),
         );
     }

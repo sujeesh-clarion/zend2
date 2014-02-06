@@ -1,5 +1,6 @@
 <?php
 namespace User\Model;
+use Zend\Form\Annotation;
 
 class User
 {
