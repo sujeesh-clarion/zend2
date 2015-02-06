@@ -1,0 +1,52 @@
+<?php
+ // module/Album/view/album/album/index.phtml:
+
+ $title = 'My Destination';
+ $this->headTitle($title);
+
+
+ ?>
+ <form action="<?php echo $this->url('travel', array('action' => 'index'))?>" method="GET">
+ <div class="container">
+    <div class="row">
+        <h2>Stylish Search Box</h2>
+           <div id="custom-search-input">
+                            <div class="input-group col-md-12">
+                            
+                                <input type="text" class="  search-query form-control" placeholder="Search" name="q" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-danger" type="submit">
+                                        <span class=" glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+    </div>
+</div>
+  </form>
+ 
+ <h1><?php echo $this->escapeHtml($title); ?></h1>
+ <p>
+     <a href="<?php echo $this->url('travel', array('action'=>'add'));?>">Add new album</a>
+ </p>
+
+ <table class="table">
+ <tr>
+     <th>Title</th>
+     <th></th>
+     <th>&nbsp;</th>
+ </tr>
+ <?php foreach ($destinations as $destination) : ?>
+ <tr>
+     <td><?php echo $this->escapeHtml($destination->title);?></td>
+     <td></td>
+     <td>
+         <a href="<?php echo $this->url('travel',
+             array('action'=>'edit', 'id' => $destination->id));?>">Edit</a>
+         <a href="<?php echo $this->url('travel',
+             array('action'=>'delete', 'id' => $destination->id));?>">Delete</a>
+     </td>
+ </tr>
+ <?php endforeach; ?>
+ </table>
+ 

@@ -2,6 +2,7 @@
 <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
                            <li>
                               <div class="row">
+                                 <div id="msg"> </div>
                                  <div class="col-md-12">
                                     <form class="form " role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
 
@@ -41,8 +42,12 @@
  $(".sign-up").click(function() {  
          $.post('/api/user/signup', {full_name:$(".full_name").val(),email: $(".email").val(), password: $(".password").val()}, function(data) {
             if (data.error == 0) {
-               $("#login-nav").append('<div class="alert alert-success">Successfully Logged in</div>');
-          }
+               $("#msg").html('<div class="alert alert-success">'+data.msg+'</div>');
+            } else {
+               $("#msg").html('<div class="alert alert-warning">'+data.msg+'</div>');
+
+            }
+
       }, 'json');
       });
 

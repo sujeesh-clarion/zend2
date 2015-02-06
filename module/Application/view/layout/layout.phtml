@@ -50,11 +50,24 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right"> 
-                 <li class="dropdown">
+                <?php
+
+                    if($this->isLoggedin) {
+                           
+                    } else {
+                ?>   
+                    <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Create an Account<b class="caret"></b></a>
                          <?php echo $this->partial('layout/signup.phtml') ?>
                         
                      </li>
+
+                     <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Login<b class="caret"></b></a>
+                         <?php echo $this->partial('layout/login.phtml') ?>
+                        
+                     </li>
+                <?php } ?>
             </ul>
             </div>
 

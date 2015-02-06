@@ -4,7 +4,9 @@ return array(
     'modules' => array(
         'Application',
         'User',
-        'Api'
+        'Api',
+        'Travel'
+       
         
     ),
 

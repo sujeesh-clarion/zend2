@@ -14,9 +14,26 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
+    protected $authservice;
+
+    public function getAuthService()
+    {
+        if (! $this->authservice) {
+            $this->authservice = $this->getServiceLocator()
+                                      ->get('AuthService');
+        }
+         
+        return $this->authservice;
+    }
     public function indexAction()
     {
-        $view = new ViewModel();
+        $data = array();
+        //if already login, redirect to success page 
+        if ($this->getAuthService()->hasIdentity()){
+           // return $this->redirect()->toRoute('success');
+            $data['isLoggedin'] = 1;
+        }
+        $view = new ViewModel($data);
 
        /* $appView = new ViewModel();
         $appView->setTemplate('layout/layout');*/

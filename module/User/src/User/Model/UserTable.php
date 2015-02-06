@@ -18,6 +18,20 @@ class UserTable
         return $resultSet;
     }
 
+    public function getByField($field)
+    {
+
+        if(is_array($field)) {
+            $rowset = $this->tableGateway->select($field); 
+            $row = $rowset->current();
+            if (!$row) {
+                return null;
+            }
+            return $row;
+
+        }
+    }
+
     public function getUser($id)
     {
         $id  = (int) $id;

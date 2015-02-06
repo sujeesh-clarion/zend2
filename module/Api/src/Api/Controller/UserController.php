@@ -25,7 +25,18 @@ class UserController extends AbstractRestfulController
     }
     public function loginAction()
     {
-        return new JsonModel(array('data' => "Welcome to the Zend Framework Album API example"));
+        $sm = $this->getServiceLocator();
+        $user = new User;
+
+        $this->userTable = $sm->get('User\Model\UserTable');
+       
+        $user->email = $this->getRequest()->getPost('email');
+        $user->password = $this->getRequest()->getPost('password');
+        
+       
+        $row = $this->userTable->getByField(array('email' => $user->email));
+
+       return new JsonModel(array('data' => "Welcome to the Zend Framework Album API example"));
 
     }
     public function signupAction()
@@ -37,9 +48,20 @@ class UserController extends AbstractRestfulController
         $user->full_name = $this->getRequest()->getPost('full_name');
         $user->email = $this->getRequest()->getPost('email');
         $user->password = $this->getRequest()->getPost('password');
-       $this->userTable->saveUser($user);
-        echo "<pre>";print_r($data);
-        return new JsonModel(array('data' => "Welcome to the Zend Framework Album API example"));
+        
+       
+        $row = $this->userTable->getByField(array('email' => $user->email));
+        if ($row) {
+            $status['error'] = 1;
+            $status['msg'] = 'Email already Exists';
+            return new JsonModel($status);
+        }
+        
+        $this->userTable->saveUser($user);
+
+
+     //   echo "<pre>";print_r($data);
+        return new JsonModel(array('error'=>0,'msg' => "Welcome to Clarion Codebank"));
 
     }
 
@@ -48,5 +70,14 @@ class UserController extends AbstractRestfulController
         // This shows the :controller and :action parameters in default route
         // are working when you browse to /module-specific-root/skeleton/foo
         return array();
+    }
+
+    public function getUserTable()
+    {
+        if (!$this->userTable) {
+            $sm = $this->getServiceLocator();
+            $this->userTable = $sm->get('User\Model\UserTable');
+        }
+        return $this->userTable;
     }
 }
